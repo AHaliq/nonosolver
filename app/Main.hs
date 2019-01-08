@@ -7,7 +7,6 @@ import Data.List.Split
 
 main :: IO ()
 main = do
-    args <- getArgs
     getArgs >>= (\x -> if null x
         then do
             hintR <- getDimHints
