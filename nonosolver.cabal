@@ -1,0 +1,64 @@
+cabal-version: 1.12
+
+-- This file has been generated from package.yaml by hpack version 0.31.1.
+--
+-- see: https://github.com/sol/hpack
+--
+-- hash: 9426cec1bb51104c359a536117f190deec8475f33196d9cc537772a88eeaf23f
+
+name:           nonosolver
+version:        0.1.0.0
+description:    Please see the README on GitHub at <https://github.com/githubuser/nonosolver#readme>
+homepage:       https://github.com/githubuser/nonosolver#readme
+bug-reports:    https://github.com/githubuser/nonosolver/issues
+author:         Author name here
+maintainer:     example@example.com
+copyright:      2018 Author name here
+license:        BSD3
+license-file:   LICENSE
+build-type:     Simple
+extra-source-files:
+    README.md
+    ChangeLog.md
+
+source-repository head
+  type: git
+  location: https://github.com/githubuser/nonosolver
+
+library
+  exposed-modules:
+      Lib
+  other-modules:
+      Paths_nonosolver
+  hs-source-dirs:
+      src
+  build-depends:
+      base >=4.7 && <5,
+      vector,
+      matrix
+  default-language: Haskell2010
+
+executable nonosolver-exe
+  main-is: Main.hs
+  other-modules:
+      Paths_nonosolver
+  hs-source-dirs:
+      app
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      base >=4.7 && <5
+    , nonosolver
+  default-language: Haskell2010
+
+test-suite nonosolver-test
+  type: exitcode-stdio-1.0
+  main-is: Spec.hs
+  other-modules:
+      Paths_nonosolver
+  hs-source-dirs:
+      test
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      base >=4.7 && <5
+    , nonosolver
+  default-language: Haskell2010
