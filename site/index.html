@@ -5,12 +5,25 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Hello World</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!--<link rel="stylesheet" type="text/css" media="screen" href="main.css" />-->
+    <link rel="stylesheet" type="text/css" media="screen" href="site/main.css" />
 </head>
 <body>
-    <h1>Hi</h1>
-    <p>it actually works</p>
-    
+    <div class="header">
+        <h1>Nonogram Solver in Haskell</h1>
+        <p>The server serving this webpage is written in haskell using the snap framework. Submit a nonogram puzzle and recieve its solution</p>
+    </div>
+    <div class="main">
+        <p>Enter puzzle here</p>
+        <textarea id="textAr" rows="5" cols="20">
+1 1
+1
+1 1
+e
+1 1
+1
+1 1</textarea>
+        <button onclick="submitFunc()" type="button">Submit</button>
+    </div>
     <script src="site/main.js"></script>
 </body>
 </html>
