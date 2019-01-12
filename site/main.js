@@ -1,8 +1,7 @@
 function submitFunc() {
     var data = document.getElementById("textAr").value.replace(/\n/g, "nn");
-    data += "nnenn";
-    data = "text="+data;
-    console.log(`Puzzle: ${data}`);
+    data = "text="+data+"nnenn";
+    
     var xhr = new XMLHttpRequest();
     xhr.withCredentials = true;
 
