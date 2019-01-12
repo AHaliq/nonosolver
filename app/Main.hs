@@ -6,25 +6,30 @@ import Lib
 import System.Environment
 import System.IO
 import Data.List.Split
+import Data.ByteString.Char8 (unpack, pack)
 
 import Control.Applicative ((<|>))
 import Snap.Core
 import Snap.Http.Server
+import Snap.Util.FileServe
 
 main :: IO ()
 main = httpMain
 
 httpMain :: IO ()
 httpMain = quickHttpServe $
-    ifTop (writeText "Hello World")
-    <|> route [("/ping", writeText "Ping"), ("echo/:echoparam", echoHandler)]
+    --ifTop (writeText "Hello World")
+    ifTop (serveFile "site/index.html")
+    <|> route
+    [ ("/site", serveDirectory "site")
+    , ("/solve", method POST solveHandler)]
     <|> writeText "Bad Path"
 
-echoHandler :: Snap ()
-echoHandler = do
-    param <- getParam "echoparam"
-    maybe (writeBS "must specify echo/param in URL")
-        writeBS param
+solveHandler :: Snap ()
+solveHandler = do
+    param <- getPostParam "text"
+    maybe (writeBS "must specify solve/param in URL")
+        (\x -> writeBS $ pack $ solveStr $ formatNewLine $ unpack x) $ param
 
 fileMain :: IO ()
 fileMain = do
@@ -34,13 +39,19 @@ fileMain = do
             hintC <- getDimHints
             putStrLn (solve hintR hintC)
         else do
-            li <- readFile (head x) >>=
-                (\x -> return $ map
-                    (\y -> map
-                        (\z -> map read $ words z) $
-                    lines y) $
-                splitOn "e\n" x)
-            putStrLn (solve (li !! 0) (li !! 1)))
+            txt <- readFile (head x) >>= (\x -> return $ solveStr x)
+            putStrLn txt)
+
+formatNewLine :: String -> String
+formatNewLine ('n':'n':xs) = '\n' : formatNewLine xs
+formatNewLine (x:xs) = x : formatNewLine xs
+formatNewLine "" = ""
+
+solveStr :: String -> String
+solveStr x = if length li >= 2 then solve (li !! 0) (li !! 1) else "bad puzzle input"
+    where
+        li :: [[[Int]]]
+        li = map (\y -> map (\z -> map read $ words z) $ lines y) $ splitOn "e\n" x
 
 getDimHints :: IO [[Int]]
 getDimHints = do
