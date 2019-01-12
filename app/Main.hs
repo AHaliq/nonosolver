@@ -1,12 +1,33 @@
-module Main where
+{-# LANGUAGE OverloadedStrings #-}
+
+module Main (main) where
 
 import Lib 
 import System.Environment
 import System.IO
 import Data.List.Split
 
+import Control.Applicative ((<|>))
+import Snap.Core
+import Snap.Http.Server
+
 main :: IO ()
-main = do
+main = httpMain
+
+httpMain :: IO ()
+httpMain = quickHttpServe $
+    ifTop (writeText "Hello World")
+    <|> route [("/ping", writeText "Ping"), ("echo/:echoparam", echoHandler)]
+    <|> writeText "Bad Path"
+
+echoHandler :: Snap ()
+echoHandler = do
+    param <- getParam "echoparam"
+    maybe (writeBS "must specify echo/param in URL")
+        writeBS param
+
+fileMain :: IO ()
+fileMain = do
     getArgs >>= (\x -> if null x
         then do
             hintR <- getDimHints
