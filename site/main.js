@@ -20,20 +20,9 @@ function submitFunc() {
         method:"POST"
     })
     .then(data => data.json())
-    .then(res => {
-        //showText(res.replace(/\n/g,"<br/>"), false)
-        showText(res.reduce((a,c,i) => a + matToStr(i+1,c), ""), false)
-    })
+    .then(res => showText(
+        res.reduce((a,c,i) => a + /*"Soln " + i + ": <br /><br />" +*/
+            c.reduce((f,g) => f + g.reduce((b,d) => b + d) + "<br />","") + "<br />", "")
+        , false))
     .catch(err=>console.log(error));
-}
-function matToStr(i,m) {
-    var str = "Soln " + i + ": <br /><br />";
-    for(let i = 0; i < m.length; i++) {
-        for(let j = 0; j < m[i].length; j++) {
-            str += m[i][j];
-        }
-        str += "<br />";
-    }
-    str += "<br />"
-    return str;
 }
