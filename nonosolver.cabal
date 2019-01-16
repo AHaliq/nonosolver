@@ -27,7 +27,7 @@ source-repository head
 
 library
   exposed-modules:
-      Lib
+      Lib, Parse
   other-modules:
       Paths_nonosolver
   hs-source-dirs:
@@ -35,7 +35,8 @@ library
   build-depends:
       base >=4.7 && <5,
       vector,
-      matrix
+      matrix,
+      json
   default-language: Haskell2010
 
 executable nonosolver-exe

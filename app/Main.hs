@@ -3,6 +3,7 @@
 module Main (main) where
 
 import Lib 
+import Parse
 import System.Environment
 import System.IO
 import Data.List.Split
@@ -29,7 +30,7 @@ solveHandler :: Snap ()
 solveHandler = do
     param <- getPostParam "text"
     maybe (writeBS "must specify solve/param in URL")
-        (\x -> writeBS $ pack $ solveStr $ formatNewLine $ unpack x) $ param
+        (\x -> writeBS $ pack $ solveStr (solveJSON) $ formatNewLine $ unpack x) $ param
 
 fileMain :: IO ()
 fileMain = do
@@ -37,9 +38,9 @@ fileMain = do
         then do
             hintR <- getDimHints
             hintC <- getDimHints
-            putStrLn (solve hintR hintC)
+            putStrLn (solveString hintR hintC)
         else do
-            txt <- readFile (head x) >>= (\x -> return $ solveStr x)
+            txt <- readFile (head x) >>= (\x -> return $ solveStr (solveString) x)
             putStrLn txt)
 
 formatNewLine :: String -> String
@@ -47,8 +48,8 @@ formatNewLine ('n':'n':xs) = '\n' : formatNewLine xs
 formatNewLine (x:xs) = x : formatNewLine xs
 formatNewLine "" = ""
 
-solveStr :: String -> String
-solveStr x = if length li >= 2 then solve (li !! 0) (li !! 1) else "bad puzzle input"
+solveStr :: ([[Int]] -> [[Int]] -> String) -> String -> String
+solveStr s x = if length li >= 2 then s (li !! 0) (li !! 1) else "bad puzzle input"
     where
         li :: [[[Int]]]
         li = map (\y -> map (\z -> map read $ words z) $ lines y) $ splitOn "e\n" x

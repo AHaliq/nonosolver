@@ -251,14 +251,8 @@ tileToSeq v = (\(a,b,_) -> (a,b)) $ f 0 v
 
 -- TILE GENERATOR -------------------------------
 
-solve :: [[Int]] -> [[Int]] -> String
-solve hr hc =
-    let solns = solve' hr hc in
-        if null solns
-            then "Invalid Puzzle"
-            else foldl (\a b -> a ++ "\n" ++ b) "" $ map M.prettyMatrix $ nub solns
-
-solve' hr hc = g m0
+solve :: [[Int]] -> [[Int]] -> [M.Matrix Tile]
+solve hr hc = nub $ g m0
     where
         w = length hc
         m0 = M.matrix (length hr) w $ const U
