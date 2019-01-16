@@ -1,4 +1,4 @@
 r:
-	stack exec nonosolver-exe
+	@stack exec nonosolver-exe
 b:
-	stack build
+	@stack build

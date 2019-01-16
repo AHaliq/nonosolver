@@ -1,6 +1,10 @@
 showText("1 1\n1\n1 1\ne\n1 1\n1\n1 1\ne\n");
-function showText(str) {
-    document.getElementById("textAr").value = str;
+function showText(str, area = true) {
+    if(area) {
+        document.getElementById("textAr").value = str;
+    }else {
+        document.getElementById("outAr").innerHTML = str;
+    }
 }
 function submitFunc() {
     var data = document.getElementById("textAr").value.replace(/\n/g, "nn");
@@ -16,6 +20,6 @@ function submitFunc() {
         method:"POST"
     })
     .then(data => data.text())
-    .then(res => showText(res))
+    .then(res => showText(res.replace(/\n/g,"<br/>"), false))
     .catch(err=>console.log(error));
 }
