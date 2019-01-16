@@ -24,5 +24,5 @@ function submitFunc() {
         res.reduce((a,c,i) => a + /*"Soln " + i + ": <br /><br />" +*/
             c.reduce((f,g) => f + g.reduce((b,d) => b + d) + "<br />","") + "<br />", "")
         , false))
-    .catch(err=>console.log(error));
+    .catch(err=>console.log(err));
 }
