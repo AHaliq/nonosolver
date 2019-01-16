@@ -1,6 +1,10 @@
+showText("1 1\n1\n1 1\ne\n1 1\n1\n1 1\ne\n");
+function showText(str) {
+    document.getElementById("textAr").value = str;
+}
 function submitFunc() {
     var data = document.getElementById("textAr").value.replace(/\n/g, "nn");
-    data = "text="+data+"nnenn";
+    data = "text="+data;
     
     fetch("http://localhost:8000/solve",{
         headers:{
@@ -11,8 +15,7 @@ function submitFunc() {
         body:data,
         method:"POST"
     })
-    .then(data=>data.text())
-    .then(res=>{
-        document.getElementById("textAr").value = res;
-    }).catch(err=>console.log(error));
+    .then(data => data.text())
+    .then(res => showText(res))
+    .catch(err=>console.log(error));
 }
