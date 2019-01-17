@@ -1,6 +1,7 @@
 module Lib
     ( Tile (U, X, O),
       solve,
+      solveOne
     ) where
 
 import Data.List
@@ -250,6 +251,9 @@ tileToSeq v = (\(a,b,_) -> (a,b)) $ f 0 v
         k' s (i,((_,t),((_,p):rs)):ps,_) = (i,((s,t),(s,p):rs):ps,O)
 
 -- TILE GENERATOR -------------------------------
+
+solveOne :: [[Int]] -> [[Int]] -> Maybe (M.Matrix Tile)
+solveOne hr hc = evalLoop hr hc (M.matrix (length hr) (length hc) $ const U)
 
 solve :: [[Int]] -> [[Int]] -> [M.Matrix Tile]
 solve hr hc = nub $ g m0

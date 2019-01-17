@@ -6,8 +6,9 @@ function showText(str, area = true) {
     }
 }
 // print util
-
+document.getElementById("subBtn").addEventListener("click", submitFunc);
 function submitFunc() {
+    showText("querying solution", false);
     var data = document.getElementById("textAr").value.replace(/\n/g, "nn");
     data = "text="+data;
     
