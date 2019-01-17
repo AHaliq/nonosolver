@@ -33,7 +33,7 @@ httpMain = do
         <|> writeText "Bad Path"
 
 getTestPaths :: IO [String]
-getTestPaths = getDirectoryContents "./site/testcases/" >>= (\(_:_:xs) -> return $ map ("./site/testcases/"++) xs)
+getTestPaths = getDirectoryContents "./site/testcases/" >>= (\xs -> return $ map ("./site/testcases/"++) $ filter (\a -> a /= "." && a /= "..") xs)
 
 loadFiles :: IO [String] -> IO [[String]]
 loadFiles x = x
