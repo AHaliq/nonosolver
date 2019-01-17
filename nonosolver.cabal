@@ -52,6 +52,7 @@ executable nonosolver-exe
     , bytestring
     , split
     , snap-core, snap-server
+    , directory, json
   default-language: Haskell2010
 
 test-suite nonosolver-test

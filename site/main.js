@@ -26,3 +26,14 @@ function submitFunc() {
         , false))
     .catch(err=>console.log(err));
 }
+fetch("http://localhost:8000/tests", {
+    headers:{
+        "content-type": "application/x-www-form-urlencoded",
+        "cache-control": "no-cache",
+        "Postman-Token": "a3415066-52cf-4b4c-b66c-df15efcb8ea0"
+    },
+    method:"GET"
+})
+.then(data => data.json())
+.then(res => console.log(res)) // put into select
+.catch(err => console.log(err));

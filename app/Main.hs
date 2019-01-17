@@ -14,23 +14,43 @@ import Snap.Core
 import Snap.Http.Server
 import Snap.Util.FileServe
 
+import System.Directory
+import Text.JSON
+
 main :: IO ()
 main = httpMain
 
 httpMain :: IO ()
-httpMain = quickHttpServe $
+httpMain = do
+    tests <- loadFiles getTestPaths
+    quickHttpServe $
     --ifTop (writeText "Hello World")
-    ifTop (serveFile "site/index.html")
-    <|> route
-    [ ("/site", serveDirectory "site")
-    , ("/solve", method POST solveHandler)]
-    <|> writeText "Bad Path"
+        ifTop (serveFile "site/index.html")
+        <|> route
+        [ ("/site", serveDirectory "site")
+        , ("/solve", method POST solveHandler)
+        , ("/tests", method GET $ testsHandler tests)]
+        <|> writeText "Bad Path"
+
+getTestPaths :: IO [String]
+getTestPaths = getDirectoryContents "./site/testcases/" >>= (\(_:_:xs) -> return $ map ("./site/testcases/"++) xs)
+
+loadFiles :: IO [String] -> IO [[String]]
+loadFiles x = x
+    >>= (\v -> foldl
+        (\a' b -> a' >>= (\a -> readFile b >>= (\f -> return $ a++[[b,f]])))
+        (return [["",""]]) v)
+    >>= (\xs -> return $ tail xs)
 
 solveHandler :: Snap ()
 solveHandler = do
     param <- getPostParam "text"
     maybe (writeBS "must specify solve/param in URL")
         (\x -> writeBS $ pack $ solveStr (solveJSON) $ formatNewLine $ unpack x) $ param
+
+testsHandler :: [[String]] -> Snap ()
+testsHandler s = do
+    writeBS $ pack $ encode $ s
 
 fileMain :: IO ()
 fileMain = do
