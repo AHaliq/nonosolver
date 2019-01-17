@@ -1,3 +1,5 @@
+const URL = "http://35.240.220.33:8000/"
+
 function showText(str, area = true) {
     if(area) {
         document.getElementById("textAr").value = str;
@@ -12,7 +14,7 @@ function submitFunc() {
     var data = document.getElementById("textAr").value.replace(/\n/g, "nn");
     data = "text="+data;
     
-    fetch("http://localhost:8000/solve",{
+    fetch(`${URL}solve`,{
         headers:{
             "content-type": "application/x-www-form-urlencoded",
             "cache-control": "no-cache",
@@ -38,7 +40,7 @@ document.getElementById("tsel").addEventListener("change",
     e => showText(tests[e.target.options.selectedIndex - 1][1]));
 // print test case to text area
 
-fetch("http://localhost:8000/tests", {
+fetch(`${URL}tests`, {
     headers:{
         "content-type": "application/x-www-form-urlencoded",
         "cache-control": "no-cache",
