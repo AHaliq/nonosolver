@@ -22,10 +22,11 @@ function submitFunc() {
     })
     .then(data => data.json())
     .then(res => showText(
-        res.reduce((a,c,i) => a + "Soln " + i + ": <br /><br />" +
+        res.length === 0 ? "puzzle has no solution" : 
+        res.reduce((a,c,i) => a + `Soln ${i}: <br /><br />` +
             c.reduce((f,g) => f + g.reduce((b,d) => b + d) + "<br />","") + "<br />", "")
         , false))
-    .catch(err=>console.log(err));
+    .catch(err => console.log(err));
 }
 
 // request solution -----------------------------
@@ -49,7 +50,7 @@ fetch("http://localhost:8000/tests", {
     tests = res;
     document.getElementById("tsel").innerHTML =
         res.reduce((a,c) => a + `<option value="${c[0]}">${c[0]}</option>`,
-            "<option disabled selected>load test case</option>");
+            `<option disabled selected>load test case</option>`);
 }) // put into select
 .catch(err => console.log(err));
 
