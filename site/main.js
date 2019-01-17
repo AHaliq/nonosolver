@@ -1,4 +1,3 @@
-showText("1 1\n1\n1 1\ne\n1 1\n1\n1 1\ne\n");
 function showText(str, area = true) {
     if(area) {
         document.getElementById("textAr").value = str;
@@ -6,6 +5,8 @@ function showText(str, area = true) {
         document.getElementById("outAr").innerHTML = str;
     }
 }
+// print util
+
 function submitFunc() {
     var data = document.getElementById("textAr").value.replace(/\n/g, "nn");
     data = "text="+data;
@@ -21,11 +22,20 @@ function submitFunc() {
     })
     .then(data => data.json())
     .then(res => showText(
-        res.reduce((a,c,i) => a + /*"Soln " + i + ": <br /><br />" +*/
+        res.reduce((a,c,i) => a + "Soln " + i + ": <br /><br />" +
             c.reduce((f,g) => f + g.reduce((b,d) => b + d) + "<br />","") + "<br />", "")
         , false))
     .catch(err=>console.log(err));
 }
+
+// request solution -----------------------------
+
+var tests;
+
+document.getElementById("tsel").addEventListener("change",
+    e => showText(tests[e.target.options.selectedIndex - 1][1]));
+// print test case to text area
+
 fetch("http://localhost:8000/tests", {
     headers:{
         "content-type": "application/x-www-form-urlencoded",
@@ -35,5 +45,12 @@ fetch("http://localhost:8000/tests", {
     method:"GET"
 })
 .then(data => data.json())
-.then(res => console.log(res)) // put into select
+.then(res => {
+    tests = res;
+    document.getElementById("tsel").innerHTML =
+        res.reduce((a,c) => a + `<option value="${c[0]}">${c[0]}</option>`,
+            "<option disabled selected>load test case</option>");
+}) // put into select
 .catch(err => console.log(err));
+
+// load test cases ------------------------------
