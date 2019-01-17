@@ -1,5 +1,5 @@
-const URL = "http://35.240.220.33:8000/"
-//const URL = "http://localhost:8000/";
+//const URL = "http://35.240.220.33:8000/"
+const URL = "http://localhost:8000/";
 
 function showText(str, area = true) {
     if(area) {
@@ -12,8 +12,6 @@ function showText(str, area = true) {
 document.getElementById("subBtn").addEventListener("click", submitFunc);
 function submitFunc() {
     showText("querying solution", false);
-    var data = document.getElementById("textAr").value.replace(/\n/g, "nn");
-    data = "text="+data;
     
     fetch(`${URL}solve`,{
         headers:{
@@ -21,7 +19,7 @@ function submitFunc() {
             "cache-control": "no-cache",
             "Postman-Token": "cb805568-b265-4674-a928-9c4e9c200bbd"
         },
-        body:data,
+        body: "text=" + document.getElementById("textAr").value.replace(/\n/g, "nn"),
         method:"POST"
     })
     .then(data => data.json())
