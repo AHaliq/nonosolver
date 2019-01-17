@@ -1,7 +1,8 @@
 module Lib
     ( Tile (U, X, O),
       solve,
-      solveOne
+      solveOne,
+      solveExpOne
     ) where
 
 import Data.List
@@ -252,8 +253,20 @@ tileToSeq v = (\(a,b,_) -> (a,b)) $ f 0 v
 
 -- TILE GENERATOR -------------------------------
 
+solveExpOne :: [[Int]] -> [[Int]] -> Maybe (M.Matrix Tile)
+solveExpOne hr hc = evalLoop hr hc (M.matrix (length hr) (length hc) $ const U)
+
 solveOne :: [[Int]] -> [[Int]] -> Maybe (M.Matrix Tile)
-solveOne hr hc = evalLoop hr hc (M.matrix (length hr) (length hc) $ const U)
+solveOne hr hc = case g m0 of
+    []  -> Nothing
+    x   -> Just (head x)
+    where
+        w = length hc
+        m0 = M.matrix (length hr) w $ const U
+        g m = maybe [] (starttrials) (evalLoop hr hc m)
+        starttrials m = let xs = getUs w 0 (M.toList m) in if xs == [] then [m] else runtrials xs m
+        runtrials [] m = []
+        runtrials (x:xs) m = (g $ M.setElem O x m) ++ runtrials xs m
 
 solve :: [[Int]] -> [[Int]] -> [M.Matrix Tile]
 solve hr hc = nub $ g m0

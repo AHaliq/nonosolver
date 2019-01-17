@@ -1,6 +1,8 @@
 module Parse 
     ( solveString,
       solveJSON,
+      solveOneJSON,
+      solveExpOneJSON,
       matToList
     ) where
 
@@ -18,6 +20,12 @@ solveString hr hc =
 
 solveJSON :: [[Int]] -> [[Int]] -> String
 solveJSON hr hc = encode $ map matToList $ solve hr hc
+
+solveOneJSON :: [[Int]] -> [[Int]] -> String
+solveOneJSON hr hc = encode $ maybe [] (\x -> [matToList x]) $ solveOne hr hc
+
+solveExpOneJSON :: [[Int]] -> [[Int]] -> String
+solveExpOneJSON hr hc = encode $ maybe [] (\x -> [matToList x]) $ solveExpOne hr hc
 
 matToList :: Show a => M.Matrix a -> [[String]]
 matToList m = map (\x -> map show $ V.toList $ M.getRow x m) [1..(M.nrows m)]
