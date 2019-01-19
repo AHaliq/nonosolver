@@ -7,3 +7,5 @@ logs:
 	touch ./log/.keep
 	touch ./log/access.log
 	touch ./log/error.log
+daemon:
+	find ./.stack-work/install -name nonosolver-exe -exec setsid {} >/dev/null 2>&1 < /dev/null &
