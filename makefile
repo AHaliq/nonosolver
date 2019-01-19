@@ -8,6 +8,6 @@ logs:
 	touch ./log/access.log
 	touch ./log/error.log
 daemon:
-	setsid "$(find ./.stack-work/install -name nonosolver-exe)" >/dev/null 2>&1 < /dev/null &
+	setsid "$(shell find ./.stack-work/install -name nonosolver-exe)" >/dev/null 2>&1 < /dev/null &
 listps:
 	ps -eo 'tty,pid,comm' | grep nonosolver-exe
