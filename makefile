@@ -9,3 +9,5 @@ logs:
 	touch ./log/error.log
 daemon:
 	find ./.stack-work/install -name nonosolver-exe -exec setsid {} >/dev/null 2>&1 < /dev/null &
+listps:
+	ps -eo 'tty,pid,comm' | grep nonosolver-exe
