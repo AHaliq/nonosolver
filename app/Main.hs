@@ -45,8 +45,15 @@ loadFiles x = x
 solveHandler :: Snap ()
 solveHandler = do
     param <- getPostParam "text"
-    maybe (writeBS "must specify solve/param in URL")
-        (\x -> writeBS $ pack $ solveStr (solveJSON) $ formatNewLine $ unpack x) $ param
+    solver <- getPostParam "solv"
+    let s = maybe 1 (\x -> read $ unpack x) solver in
+        maybe (writeBS "must specify solve/param in URL")
+            (\x -> writeBS $ pack $ solveStr (getSolver s) $ formatNewLine $ unpack x) $ param
+
+getSolver :: Int -> ([[Int]] -> [[Int]] -> String)
+getSolver 1 = solveJSON
+getSolver 2 = solveOneJSON
+getSolver x = solveExpOneJSON
 
 testsHandler :: [[String]] -> Snap ()
 testsHandler s = do
