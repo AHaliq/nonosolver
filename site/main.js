@@ -35,6 +35,7 @@ function submitFunc() {
 
 var tests;
 var solver = 1;
+document.getElementById("textAr").addEventListener("keydown", e => document.getElementById("tsel").selectedIndex = "0");
 document.getElementById("ssel").addEventListener("change", e => solver = e.target.options.selectedIndex + 1);
 document.getElementById("tsel").addEventListener("change",
     e => showText(tests[e.target.options.selectedIndex - 1][1]));
