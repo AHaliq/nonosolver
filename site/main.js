@@ -11,7 +11,7 @@ function showText(str, area = true) {
 // print util
 document.getElementById("subBtn").addEventListener("click", submitFunc);
 function submitFunc() {
-    showText("querying solution", false);
+    showText("querying solution<br>(if unresponsive try 'solve without guessing')", false);
     
     fetch(`${URL}solve`,{
         headers:{
@@ -19,13 +19,13 @@ function submitFunc() {
             "cache-control": "no-cache",
             "Postman-Token": "cb805568-b265-4674-a928-9c4e9c200bbd"
         },
-        body: `text=${document.getElementById("textAr").value.replace(/\n/g, "nn")}&solv=1`,
+        body: `text=${document.getElementById("textAr").value.replace(/\n/g, "nn")}&solv=${solver}`,
         method:"POST"
     })
     .then(data => data.json())
     .then(res => showText(
         res.length === 0 ? "puzzle has no solution" : 
-        res.reduce((a,c,i) => a + `Soln ${i}: <br /><br />` +
+        res.reduce((a,c,i) => a + (solver == 1 ? `Soln ${i}: <br /><br />` : "") +
             c.reduce((f,g) => f + g.reduce((b,d) => b + d) + "<br />","") + "<br />", "")
         , false))
     .catch(err => console.log(err));
@@ -34,7 +34,8 @@ function submitFunc() {
 // request solution -----------------------------
 
 var tests;
-
+var solver = 1;
+document.getElementById("ssel").addEventListener("change", e => solver = e.target.options.selectedIndex + 1);
 document.getElementById("tsel").addEventListener("change",
     e => showText(tests[e.target.options.selectedIndex - 1][1]));
 // print test case to text area
