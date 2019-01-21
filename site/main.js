@@ -1,5 +1,5 @@
-//const URL = "http://35.240.220.33:8000/"
-const URL = "http://localhost:8000/";
+const URL = "http://35.240.220.33:8000/"
+//const URL = "http://localhost:8000/";
 
 function showText(str, area = true) {
     if(area) {
