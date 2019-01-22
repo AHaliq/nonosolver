@@ -1,4 +1,5 @@
-textarea, #outAr{
+textarea{
+    resize: none;
     font-family: monospace;
 }
 select {

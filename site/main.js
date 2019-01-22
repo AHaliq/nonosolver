@@ -40,9 +40,11 @@ function showText(str) {
 
 function printCanvas(res, puz) {
     /** tile dimensions */
-    const bwdt = 14;
+    const bwdt = 16;
+    /** font size for hints */
+    const fnt = 10.7;
     /** cross ratio to tile */
-    const crat = 0.85;
+    const crat = 0.4;
     /** board margin */
     const bmar = 20;
     /** line weight for thick lines */
@@ -77,18 +79,24 @@ function printCanvas(res, puz) {
         var str = `<g>`;
         str = range(0,bdn[1]).reduce((a,c) =>
             ((x,l) => a + drawLine(x, l ? top : itop, x, btm,
-                l && (c - hn[0]) % gridw === 0 || c === 0 ? wthk : wthn))
+                l && (c - hn[0]) % gridw === 0 || c === 0 || c === bdn[1] ? wthk : wthn))
             (left+bwdt*c, c>=hn[0]), str);
         str = range(0,bdn[0]).reduce((a,c) =>
             ((y,t) => a + drawLine(t ? left : ileft, y, right, y,
-                t && (c - hn[1]) % gridw === 0 || c === 0 ? wthk : wthn))
+                t && (c - hn[1]) % gridw === 0 || c === 0 || c === bdn[0] ? wthk : wthn))
             (top+bwdt*c, c>=hn[1]),str);
-        str += `</g>`;
         // print grid
-
+        
+        str = hs[0].reduce((a1,c1,ri) => c1.reduce((a2,c2,hi) =>
+            a2 + drawHint(left + (hn[0] - c1.length + hi + 0.5) * bwdt, itop + (ri + 0.75) * bwdt,c2,fnt), a1), str);
+        str = hs[1].reduce((a1,c1,ci) => c1.reduce((a2,c2,hi) =>
+            a2 + drawHint(ileft + (ci + 0.5) * bwdt, top + (hn[1] - c1.length + hi + 0.75) * bwdt,c2,fnt), a1), str);
         // print hints
-
+        
+        str = c.reduce((a1,r,y) => r.reduce((a2,t,x) =>
+            a2 + (t === '*' ? "" : drawTile(ileft + x * bwdt, itop + y * bwdt, bwdt, crat, t === 'O')), a1), str);
         // print tiles
+        str += `</g>`;
         return str;
     }
     
@@ -102,6 +110,16 @@ function range(a,b) {
     return Array(b-a+1).fill(a).map((v,i) => v + i);
 }
 
+function drawTile(x,y,w,r,solid = true) {
+    var m = (1-r)* 0.5 * w
+    var t = y + m, l = x + m, b = y + w - m, r = x + w - m;
+    return solid ? `<rect x="${x}" y="${y}" width="${w}" height="${w}" style="fill: rgba(0, 0, 0, 0.6)" />` :
+    `<path d="M ${l} ${t} L ${r} ${b} M ${l} ${b} L ${r} ${t} Z" style="stroke: silver; stroke-width: 2px"></path>`;
+}
+
+function drawHint(x,y,t,s = 10) {
+    return `<text x="${x}" y="${y}" text-anchor="middle" style="font-size: ${s}">${t}</text>`;
+}
 function drawLine(x1,y1,x2,y2,w=1.3,col = "black") {
     return `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" style="stroke: ${col}; stroke-width: ${w}px" />`;
 }
@@ -124,11 +142,6 @@ function submitFunc() {
         method:"POST"
     })
     .then(data => data.json())
-    /*.then(res => showText(
-        res.length === 0 ? "puzzle has no solution" : 
-        res.reduce((a,c,i) => a + (solver == 1 ? `Soln ${i+1}: <br /><br />` : "") +
-            c.reduce((f,g) => f + g.reduce((b,d) => b + d) + "<br />","") + "<br />", "")
-        , false))*/
     .then(res => res.length === 0 ? showText("puzzle has no solution") : printCanvas(res, puzzle))
     .catch(err => console.error(err));
     // make request
