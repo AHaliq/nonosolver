@@ -30,7 +30,7 @@ function resetTestSel() {
 }
 
 function clean(str) {
-    return str.replace(/[^0-9 \n]/g, "").replace(/\n/g, "n").replace(/\s+/g, " ").replace(/n/g,"\n");
+    return str.replace(/[^0-9 \n]/g, "").replace(/\n/g, "n").replace(/\s+/g, " ").replace(/n/g,"\n").replace(/ 0|0 /g,"").replace(/0\n/g,"\n");
 }
 
 function showText(str) {
@@ -44,7 +44,7 @@ function printCanvas(res, puz) {
     /** font size for hints */
     const fnt = 10.7;
     /** cross ratio to tile */
-    const crat = 0.4;
+    const crat = 0.33;
     /** board margin */
     const bmar = 20;
     /** line weight for thick lines */
@@ -113,8 +113,8 @@ function range(a,b) {
 function drawTile(x,y,w,r,solid = true) {
     var m = (1-r)* 0.5 * w
     var t = y + m, l = x + m, b = y + w - m, r = x + w - m;
-    return solid ? `<rect x="${x}" y="${y}" width="${w}" height="${w}" style="fill: rgba(0, 0, 0, 0.6)" />` :
-    `<path d="M ${l} ${t} L ${r} ${b} M ${l} ${b} L ${r} ${t} Z" style="stroke: silver; stroke-width: 2px"></path>`;
+    return solid ? `<rect x="${x}" y="${y}" width="${w}" height="${w}" style="fill: rgba(0, 0, 0, 0.7)" />` :
+    `<path d="M ${l} ${t} L ${r} ${b} M ${l} ${b} L ${r} ${t} Z" style="stroke: silver; stroke-width: 2px" />`;
 }
 
 function drawHint(x,y,t,s = 10) {
@@ -130,7 +130,7 @@ document.getElementById("subBtn").addEventListener("click", submitFunc);
 function submitFunc() {
     document.getElementById("controls").style.display = "none";
     document.getElementById("requery").style.display = "block";
-    showText("querying solution<br><i>too long? try 'solve without guessing'</i>", false);
+    showText("<br/>solving...<br/><i>too long? try 'solve without guessing'</i>", false);
     // set control ui
 
     var puzzle = `${clean(document.getElementById("textArRow").value)}\ne\n${clean(document.getElementById("textArCol").value)}\ne\n`;
