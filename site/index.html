@@ -9,18 +9,22 @@
 </head>
 <body>
     <div class="header">
-        <h1>Nonogram Solver in Haskell</h1>
+        <h3>nonogram solver in haskell</h3>
         <p>The server serving this webpage is written in haskell using the snap framework. Submit a nonogram puzzle and recieve its solution</p>
     </div>
-    <div class="main">
-        <textarea id="textAr" rows="10" placeholder="Enter puzzle here or load test case"></textarea><br />
-        <select id="tsel"></select><br />
-        <select id="ssel">
-            <option>solve all valid solutions</option>
-            <option>solve first valid solution</option>
-            <option>solve without guessing algorithm</option>
-        </select><br />
-        <button id="subBtn" type="button">Submit</button><br />
+    <div class="main" id="main">
+        <button id="requery" type="button">new query</button>
+        <div id="controls">
+            <textarea id="textArRow" rows="10" placeholder="Enter row hints here"></textarea>
+            <textarea id="textArCol" rows="10" placeholder="Enter column hints here"></textarea><br />
+            <select id="tsel"></select><br />
+            <select id="ssel">
+                <option>solve all valid solutions</option>
+                <option>solve first valid solution</option>
+                <option>solve without guessing algorithm</option>
+            </select><br />
+            <button id="subBtn" type="button">Submit</button><br />
+        </div>
         <p id="outAr"></p>
     </div>
     <script src="site/main.js"></script>

@@ -1,6 +1,15 @@
 textarea, #outAr{
     font-family: monospace;
 }
+select {
+    width: 20em;
+}
+#requery {
+    display: none;
+}
+#controls > *{
+    margin-bottom: 0.5em;
+}
 .header {
     width: 25em;
 }
