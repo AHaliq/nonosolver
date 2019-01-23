@@ -2,7 +2,8 @@ module Lib
     ( Tile (U, X, O),
       solve,
       solveOne,
-      solveExpOne
+      solveExpOne,
+      solveLineString
     ) where
 
 import Data.List
@@ -307,12 +308,50 @@ setmat _ [] m = m
 setmat t (c:cs) m = setmat t cs $ M.setElem t c m
 
 -- CORE ALGO ------------------------------------
-{-
-issolved m = f $ M.toList m
+
+-- l is length, i is 0 based, return is 1 based
+collateTrack :: V.Vector Bool -> Int -> [Int]
+collateTrack v l = f 0 v
+    where  f i v = if i == l then [] else (if v V.! i then ((i+1):) else id) $ f (i+1) v
+
+-- c is 0 based, l is 1 based
+setAndTrack :: Bool -> Int -> Tile -> [Int] -> M.Matrix Tile -> V.Vector Bool -> (M.Matrix Tile, V.Vector Bool)
+setAndTrack _ _ _ [] m v = (m,v)
+setAndTrack r l t (c:cs) m v = setAndTrack r l t cs m' v'
     where
-        f [] = True
-        f (U:_) = False
-        f (_:ts) = f ts
--}
--- TRIALS ALGO ----------------------------------
+        p = if r then (l,c+1) else (c+1,l)
+        m' = M.setElem t p m
+        v' = if m M.! p == U then v V.// [(c,True)] else v
+
+-- i is 1 based
+lineSolve :: Bool -> [Int] -> Int -> M.Matrix Tile -> V.Vector Bool -> Maybe (M.Matrix Tile, V.Vector Bool)
+lineSolve row hs i m v = (\(os,xs) -> uncurry (s X xs) (s O os m v)) <$>
+    evalseq hs (V.toList $ (if row then M.getRow else M.getCol) i m)
+    where s = setAndTrack row i
+
+-- i is 1 based
+lineSolveDim :: Bool -> V.Vector [Int] -> M.Matrix Tile -> [Int] -> V.Vector Bool -> Maybe (M.Matrix Tile, V.Vector Bool)
+lineSolveDim _ _ m [] v = Just (m,v)
+lineSolveDim r hs m (i:is) v = lineSolve r (hs V.! (i-1)) i m v >>= (\(m',v') -> lineSolveDim r hs m' is v')
+
+lineSolveStep :: V.Vector [Int] -> V.Vector [Int] -> Int -> Int -> M.Matrix Tile -> [Int] -> V.Vector Bool -> Maybe (M.Matrix Tile)
+lineSolveStep hr hc w h m ri cv = lineSolveDim True hr m ri cv >>=
+    (\(m',v') -> lineSolveDim False hc m' (collateTrack v' w) (V.replicate h False)) >>=
+    (\(m',v') -> let ri' = (collateTrack v' h) in if null ri'
+        then Just m'
+        else lineSolveStep hr hc w h m' ri' (V.replicate w False))
+
+solveLine :: [[Int]] -> [[Int]] -> Maybe (M.Matrix Tile)
+solveLine hr hc = lineSolveStep (V.fromList hr) (V.fromList hc) w h (M.matrix h w $ const U) [1..h] (V.replicate w True)
+    where
+        h = length hr
+        w = length hc
+
+solveLineString :: [[Int]] -> [[Int]] -> String
+solveLineString hr hc = maybe "no solution" M.prettyMatrix (solveLine hr hc)
+
+-- at matrix level call lineSolve on row then use results call on col
+-- given list of i to check and vector flags to use
+
+-- LINE SOLVE ALGO ------------------------------
 
