@@ -30,7 +30,8 @@ function resetTestSel() {
 }
 
 function clean(str) {
-    return str.replace(/[^0-9 \n]/g, "").replace(/\n/g, "n").replace(/\s+/g, " ").replace(/n/g,"\n").replace(/ 0|0 /g,"").replace(/0\n/g,"\n");
+    return str.replace(/[^0-9 \n]/g, "").replace(/\n/g, "n").replace(/\s+/g, " ").replace(/n/g,"\n")
+        .replace(/ 0 /g," ").replace(/ 0\n|\n0 /g,"\n").replace(/\n0\n/g,"\n\n");
 }
 
 function showText(str) {
