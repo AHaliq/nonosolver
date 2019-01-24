@@ -341,14 +341,14 @@ lineSolveStep hr hc w h m ri cv = lineSolveDim True hr m ri cv >>=
         then Just m'
         else lineSolveStep hr hc w h m' ri' (V.replicate w False))
 
-solveLine :: [[Int]] -> [[Int]] -> Maybe (M.Matrix Tile)
-solveLine hr hc = lineSolveStep (V.fromList hr) (V.fromList hc) w h (M.matrix h w $ const U) [1..h] (V.replicate w True)
+solveLine :: [[Int]] -> [[Int]] -> M.Matrix Tile -> Maybe (M.Matrix Tile)
+solveLine hr hc m = lineSolveStep (V.fromList hr) (V.fromList hc) w h m [1..h] (V.replicate w True)
     where
         h = length hr
         w = length hc
 
 solveLineString :: [[Int]] -> [[Int]] -> String
-solveLineString hr hc = maybe "no solution" M.prettyMatrix (solveLine hr hc)
+solveLineString hr hc = maybe "no solution" M.prettyMatrix (solveLine hr hc (M.matrix (length hr) (length hc) $ const U))
 
 -- at matrix level call lineSolve on row then use results call on col
 -- given list of i to check and vector flags to use
