@@ -3,6 +3,7 @@ module Parse
       solveJSON,
       solveOneJSON,
       solveExpOneJSON,
+      solveLineOnlyJSON,
       matToList
     ) where
 
@@ -26,6 +27,9 @@ solveOneJSON hr hc = encode $ maybe [] (\x -> [matToList x]) $ solveOne hr hc
 
 solveExpOneJSON :: [[Int]] -> [[Int]] -> String
 solveExpOneJSON hr hc = encode $ maybe [] (\x -> [matToList x]) $ solveExpOne hr hc
+
+solveLineOnlyJSON :: [[Int]] -> [[Int]] -> String
+solveLineOnlyJSON hr hc = encode $ maybe [] (\x -> [matToList x]) $ solveLineOnly hr hc
 
 matToList :: Show a => M.Matrix a -> [[String]]
 matToList m = map (\x -> map show $ V.toList $ M.getRow x m) [1..(M.nrows m)]

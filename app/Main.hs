@@ -53,7 +53,7 @@ solveHandler = do
 getSolver :: Int -> ([[Int]] -> [[Int]] -> String)
 getSolver 1 = solveJSON
 getSolver 2 = solveOneJSON
-getSolver x = solveExpOneJSON
+getSolver x = solveLineOnlyJSON
 
 testsHandler :: [[String]] -> Snap ()
 testsHandler s = do
