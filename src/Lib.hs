@@ -341,6 +341,8 @@ lineSolveStep hr hc w h m ri cv = lineSolveDim True hr m ri cv >>=
         then Just m'
         else lineSolveStep hr hc w h m' ri' (V.replicate w False))
 
+-- STARTS all rows and columns
+-- TODO start at targetted row column
 lineSolver :: [[Int]] -> [[Int]] -> M.Matrix Tile -> Maybe (M.Matrix Tile)
 lineSolver hr hc m = lineSolveStep (V.fromList hr) (V.fromList hc) w h m [1..h] (V.replicate w True)
     where
