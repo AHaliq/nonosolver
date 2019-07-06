@@ -15,3 +15,6 @@ test case are formatted as from top row to bottom row each line hints for that r
 partitioned with a character 'e'
 then from left to right column hints
 ending with a character 'e' and empty line
+
+## Google Cloud Kubernetes Workload Deployment
+Dockerfile entry points creates a js file containing ip address via `status.podIP` when run on kubernetes engine. If running docker locally, use `docker run -p 8000:8000 -e IP_ADDRESS=<address> nonosolver`.
