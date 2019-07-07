@@ -8,8 +8,8 @@ RUN mkdir -p /var/www/app
 COPY . /var/www/app
 WORKDIR /var/www/app
 
-RUN stack setup
+# RUN stack setup
 RUN stack build
 
 ENTRYPOINT [ "./docker-entrypoint.sh" ]
-CMD ["stack", "run"]
+CMD ["stack", "exec -- nonosolver-exe -p 80]
