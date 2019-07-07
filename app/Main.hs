@@ -13,6 +13,7 @@ import Control.Applicative ((<|>))
 import Snap.Core
 import Snap.Http.Server
 import Snap.Util.FileServe
+import Snap.Util.CORS
 
 import System.Directory
 import Text.JSON
@@ -28,8 +29,8 @@ httpMain = do
         ifTop (serveFile "site/index.html")
         <|> route
         [ ("/site", serveDirectory "site")
-        , ("/solve", method POST solveHandler)
-        , ("/tests", method GET $ testsHandler tests)]
+        , ("/solve", applyCORS defaultOptions $ method POST $ solveHandler)
+        , ("/tests", applyCORS defaultOptions $ method GET $ testsHandler tests)]
         <|> writeText "Bad Path"
 
 getTestPaths :: IO [String]
