@@ -1,4 +1,3 @@
-//const URL = "http://35.240.220.33:8000/"
 //const URL = "http://localhost:8000/";
 /** file name test case pair */
 var tests;
