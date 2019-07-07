@@ -1,4 +1,3 @@
-//const URL = "http://localhost:8000/";
 /** file name test case pair */
 var tests;
 /** solver type 1-all,2-first,3-no guess */
