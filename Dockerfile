@@ -11,5 +11,4 @@ WORKDIR /var/www/app
 # RUN stack setup
 RUN stack build
 
-ENTRYPOINT ["./docker-entrypoint.sh"]
 CMD ["stack","exec","--","nonosolver-exe","-p","80"]
