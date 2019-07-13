@@ -1,3 +1,5 @@
+/** URL */
+var URL = `${window.location.origin}/`;
 /** file name test case pair */
 var tests;
 /** solver type 1-all,2-first,3-no guess */
