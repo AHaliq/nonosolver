@@ -1,5 +1,5 @@
 # nonosolver
-## file main running on console
+## ~~file main running on console~~ [DEPRECATED]
 1. `stack build`
 2. `stack exec -- nonosolver-exe <test case>`
 test cases are stored in `site/testcases` directory
